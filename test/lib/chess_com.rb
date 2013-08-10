@@ -21,6 +21,25 @@ describe ChessCom::GameListing do
   end
   it 'can detect other players' do
     listing = ChessCom::GameListing.new(username: @user)
-    (listing.users.size > 0).must_equal true
+    (listing.players.size > 0).must_equal true
+  end
+end
+
+class FakeLink
+  def initialize(href)
+    @href = href
+  end
+  def attribute att
+    return @href
+  end
+end
+
+describe ChessCom::GameListing do
+  it 'should fucking work' do
+    links = %w{google.com yahoo.net canada.ca bs}.map { |h| FakeLink.new h }
+    urls = ChessCom.select_if_match(links, /.+\..+/) do |url, text|
+      /.+\.(?<com>.+)/.match(url)[:com]
+    end
+    urls.must_equal %w{com net ca}
   end
 end
