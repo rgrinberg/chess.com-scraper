@@ -36,10 +36,12 @@ module ChessCom
     attribute :pages, Array[Integer], default: []
     attribute :players, Array[String], default: []
     attr_reader :username
+    attr_reader :page
 
     def initialize (username: (raise ArgumentError, "username must be provided"),
                     page: 1, client: DefaultClient.new)
       @username = username
+      @page = page
       html = client.get(listing_url username, page)
       doc = Nokogiri::HTML html
       links = doc.css 'a'
@@ -56,7 +58,7 @@ module ChessCom
         href = link.attribute('href').to_s
         page_number = /game_archive\?.+\&page=(?<page>\d+)/.match(href)[:page]
         page_number.to_i
-      end
+      end.reject { |x| x == page }
       .uniq.reject { |p| p == page}
       @players = ChessCom.select_if_match links,
         /members\/view\/.+#games$/ do |href, text|
