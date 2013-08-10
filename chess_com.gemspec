@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = ChessCom::VERSION
   spec.authors       = ["Rudi Grinberg"]
   spec.email         = ["rudi.grinberg@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Chess.com scraper}
+  spec.summary       = %q{Get games/players from the chess.com site}
   spec.homepage      = ""
   spec.license       = "MIT"
 
