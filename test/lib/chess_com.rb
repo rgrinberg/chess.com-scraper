@@ -22,7 +22,7 @@ describe ChessCom::GameListing do
   it 'can detect other players' do
     listing = ChessCom::GameListing.new(username: @user)
     (listing.players.size > 0).must_equal true
-    refute listing.players.include? @user
+    refute listing.players.include? listing.username
   end
 end
 

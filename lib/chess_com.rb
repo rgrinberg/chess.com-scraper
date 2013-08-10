@@ -35,6 +35,7 @@ module ChessCom
     attribute :games, Array[Game], default: []
     attribute :pages, Array[Integer], default: []
     attribute :players, Array[String], default: []
+    attr_reader :username
 
     def initialize (username: (raise ArgumentError, "username must be provided"),
                     page: 1, client: DefaultClient.new)
