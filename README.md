@@ -1,6 +1,6 @@
 # ChessCom
 
-TODO: Write a gem description
+Crawl chess.com api
 
 ## Installation
 
@@ -18,7 +18,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+game = ChessCom::GameListing.new(username: "karpov")
+game.games.each do |game|
+  puts game.game_id
+end
+game.players.each do |player|
+  puts "#{game.username} played against #{player}"
+end
+```
 
 ## Contributing
 
