@@ -5,6 +5,14 @@ require 'faraday'
 
 module ChessCom
 
+  def select_if_match(links, match)
+    # http://www.chess.com/members/view/sergioK#games
+    links.select { |l| l.attribute('href').to_s =~ match }
+    .map { |link| yield link.attribute('href'), "" }
+  end
+
+  module_function :select_if_match
+
   class DefaultClient
     def initialize 
       @conn = Faraday.new
@@ -26,7 +34,7 @@ module ChessCom
     include Virtus
     attribute :games, Array[Game], default: []
     attribute :pages, Array[Integer], default: []
-    attribute :users, Array[String], default: []
+    attribute :players, Array[String], default: []
 
     def initialize (username: (raise ArgumentError, "username must be provided"),
                     page: 1, client: DefaultClient.new)
@@ -48,6 +56,11 @@ module ChessCom
         page_number.to_i
       end
       .uniq.reject { |p| p == page}
+      @players = ChessCom.select_if_match links,
+        /members\/view\/.+#games$/ do |href, text|
+        # or just use text here
+        /members\/view\/(?<user>.+)#games$/.match(href)[:user]
+      end.uniq
     end
 
     def listing_url user, page
