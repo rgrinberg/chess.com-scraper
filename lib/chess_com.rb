@@ -38,6 +38,7 @@ module ChessCom
 
     def initialize (username: (raise ArgumentError, "username must be provided"),
                     page: 1, client: DefaultClient.new)
+      @username = username
       html = client.get(listing_url username, page)
       doc = Nokogiri::HTML html
       links = doc.css 'a'
@@ -60,7 +61,7 @@ module ChessCom
         /members\/view\/.+#games$/ do |href, text|
         # or just use text here
         /members\/view\/(?<user>.+)#games$/.match(href)[:user]
-      end.uniq
+      end.uniq.reject {|x| x == @username}
     end
 
     def listing_url user, page
